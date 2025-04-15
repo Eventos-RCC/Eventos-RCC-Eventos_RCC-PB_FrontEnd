@@ -1,9 +1,9 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = import.meta.env.API_BASE_URL || 'http://localhost:3000'
+axios.defaults.baseURL = import.meta.env.API_BASE_URL || 'http://localhost:8080'
 
 const api = axios.create({
-    baseURL: import.meta.env.API_BASE_URL || 'http://localhost:3000',
+    baseURL: import.meta.env.API_BASE_URL || 'http://localhost:8080',
 })
 
 export default api

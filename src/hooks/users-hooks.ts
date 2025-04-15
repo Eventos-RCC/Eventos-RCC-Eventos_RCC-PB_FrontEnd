@@ -28,7 +28,7 @@ const createUser = async (user: {
     setError(null)
 
     try {
-        const response = await api.post("/users", {
+        const response = await api.post("/api/user", {
             ...user,
         })
         create(response.data)
@@ -44,7 +44,7 @@ const getUsers = async () => {
     setLoading(true)
     setError(null)
     try {
-        const response = await api.get<UserType[]>("/users")
+        const response = await api.get<UserType[]>("/api/user")
         setUsers(response.data)
     } catch (err) {
         setError("Erro ao buscar usuários")

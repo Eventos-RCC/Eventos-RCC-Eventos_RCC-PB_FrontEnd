@@ -28,12 +28,13 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select";
-import { Eye, EyeOff } from "lucide-react";
+import { CheckCircle, Eye, EyeOff, X, XCircle } from "lucide-react";
 import { useState } from "react";
 import { useUsers } from "@/hooks/users-hooks";
 import { Loading } from "@/components/custom-components/Loading";
 import { MaskedInput } from "@/components/custom-components/MaskedInput";
 import { maskDate, maskPhone } from "@/utils/masks";
+import { toast } from "sonner";
 
 const createUserSchema = z.object({
     name: z.string().regex(/^[a-zA-ZÀ-ÿ\s]+$/, "Nome inválido"),
@@ -65,9 +66,27 @@ export function RegisterPage() {
         try {
             const result = await createUser(data)
             if (result) {
+                toast("Sucesso!", {
+                    description: "Cadastro concluído!",
+                    icon: <CheckCircle className="text-green-500" />,
+                    className: "bg-green-50 border border-green-300 text-green-900",
+                    action: {
+                        label: <X />,
+                        onClick: () => console.log("Fechar"),
+                    },
+                })
                 console.log("Usuário criado com sucesso", result)
             }
         } catch (error) {
+            toast("Erro!", {
+                description: "Falha no cadastro!",
+                icon: <XCircle className="text-red-500" />,
+                className: "bg-red-50 border border-red-300 text-red-900",
+                action: {
+                    label: <X />,
+                    onClick: () => console.log("Fechar"),
+                },
+            })
             console.error("Erro ao criar usuário", error)
         }
     }
@@ -129,10 +148,6 @@ export function RegisterPage() {
                                                         mask={maskDate}
                                                         {...field}
                                                     />
-                                                    {/* <Input
-                                                                placeholder="Ex.: 01/01/2000"
-                                                                {...field}
-                                                            /> */}
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -195,10 +210,6 @@ export function RegisterPage() {
                                                         mask={maskPhone}
                                                         {...field}
                                                     />
-                                                    {/* <Input
-                                                        placeholder="Ex.: (83) 9 9999-9999"
-                                                        {...field}
-                                                    /> */}
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
