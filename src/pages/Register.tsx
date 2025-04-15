@@ -28,65 +28,66 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select";
-import InputMask from 'react-input-mask';
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import { useUsers } from "@/hooks/users-hooks";
+import { Loading } from "@/components/custom-components/Loading";
+import { MaskedInput } from "@/components/custom-components/MaskedInput";
+import { maskDate, maskPhone } from "@/utils/masks";
 
-const formSchema = z.object({
-    name: z.string().min(2, { //CORRIGIR O REGEX DO NOME
-        message: "Informe seu nome completo",
-    }),
-    birthdate: z.string().min(2, { //CORRIGIR O REGEX DA DATA DE NASCIMENTO
-        message: "Informe A data de nascimento no formato dd/mm/aaaa",
-    }),
-    diocese: z.string().min(2, { //CORRIGIR O REGEX DA DATA DE NASCIMENTO
-        message: "Informe a sua diocese",
-    }),
-    phone: z.string().min(2, { //CORRIGIR O REGEX DO TELEFONE
-        message: "Informe um número de telefone válido",
-    }),
-    email: z.string().min(2, { //CORRIGIR O REGEX DO EMAIL
-        message: "Informe um email válido",
-    }),
-    password: z.string().min(2, { //CORRIGIR O REGEX DA SENHA
-        message: "A senha precisa ter no mínimo 8 caracteres, com letras, números e caracteres especiais como @, #, $, %, &, *",
-    }),
+const createUserSchema = z.object({
+    name: z.string().regex(/^[a-zA-ZÀ-ÿ\s]+$/, "Nome inválido"),
+    birthdate: z.string().regex(/^\d{2}\/\d{2}\/\d{4}$/, "Data de nascimento inválida"),
+    diocese: z.enum(["Arquidiocese da Paraíba", "Diocese de Guarabira", "Diocese de Campina Grande", "Diocese de Patos", "Diocese de Cajazeiras", "Outra"]),
+    phone: z.string().regex(/^\(\d{2}\) \d \d{4}-\d{4}$/, "Telefone inválido"),
+    email: z.string().regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "Email inválido"),
+    password: z.string().regex(/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%^&+=]).{8,}$/, "A senha precisa ter no mínimo 8 caracteres, com letras, números e caracteres especiais como @, #, $, %, &, *")
 })
 
 export function RegisterPage() {
 
+    const { createUser, loading } = useUsers()
     const [showPassword, setShowPassword] = useState(true)
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<z.infer<typeof createUserSchema>>({
+        resolver: zodResolver(createUserSchema),
         defaultValues: {
             name: "",
             birthdate: "",
-            diocese: "",
+            diocese: undefined,
             phone: "",
             email: "",
             password: "",
         },
     })
 
-    function onSubmit(data: z.infer<typeof formSchema>) {
-        console.log(data);
+    const onSubmit = async (data: z.infer<typeof createUserSchema>) => {
+        try {
+            const result = await createUser(data)
+            if (result) {
+                console.log("Usuário criado com sucesso", result)
+            }
+        } catch (error) {
+            console.error("Erro ao criar usuário", error)
+        }
     }
 
     return (
         <>
             <HeaderBar />
-            <Card className="relative flex flex-row max-w-3xl mx-auto my-10 bg-white shadow-lg rounded-lg">
+            <Card className="relative flex flex-row max-w-3xl mx-auto my-10 bg-white shadow-lg rounded-lg select-none">
                 <img
                     src="src/assets/rccpb-04.png"
                     alt="logo-register-rccpb"
                     className="absolute top-15 left-15 w-1/3 h-auto object-cover filter brightness-0 invert opacity-60"
+                    draggable="false"
                 />
                 <div className="flex w-full h-full">
                     <img
                         src="src/assets/rcc-register-img-00.png"
                         alt="register-img-00"
                         className="w-1/2 h-auto object-cover rounded-l-lg"
+                        draggable="false"
                     />
                     <div className="flex flex-col justify-between p-6 w-full">
                         <CardHeader className="flex flex-col items-center">
@@ -123,18 +124,15 @@ export function RegisterPage() {
                                             <FormItem>
                                                 <FormLabel>Data de nascimento</FormLabel>
                                                 <FormControl>
-                                                    <InputMask
-                                                        mask="99/99/9999"
-                                                        value={field.value}
-                                                        onChange={field.onChange}
-                                                    >
-                                                        {(inputProps: any) => (
-                                                            <Input
-                                                                {...inputProps}
+                                                    <MaskedInput
+                                                        placeholder="Ex.: 01/01/2000"
+                                                        mask={maskDate}
+                                                        {...field}
+                                                    />
+                                                    {/* <Input
                                                                 placeholder="Ex.: 01/01/2000"
-                                                            />
-                                                        )}
-                                                    </InputMask>
+                                                                {...field}
+                                                            /> */}
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -153,27 +151,27 @@ export function RegisterPage() {
                                                         </SelectTrigger>
                                                         <SelectContent>
                                                             <SelectGroup>
-                                                                <SelectItem value="arquidiocese-da-paraiba"
+                                                                <SelectItem value="Arquidiocese da Paraíba"
                                                                 >
                                                                     Arquidiocese da Paraíba
                                                                 </SelectItem>
-                                                                <SelectItem value="diocese-de-guarabira"
+                                                                <SelectItem value="Diocese de Guarabira"
                                                                 >
                                                                     Diocese de Guarabira
                                                                 </SelectItem>
-                                                                <SelectItem value="diocese-de-campina-grande"
+                                                                <SelectItem value="Diocese de Campina Grande"
                                                                 >
                                                                     Diocese de Campina Grande
                                                                 </SelectItem>
-                                                                <SelectItem value="diocese-de-patos"
+                                                                <SelectItem value="Diocese de Patos"
                                                                 >
                                                                     Diocese de Patos
                                                                 </SelectItem>
-                                                                <SelectItem value="diocese-de-cajazeiras"
+                                                                <SelectItem value="Diocese de Cajazeiras"
                                                                 >
                                                                     Diocese de Cajazeiras
                                                                 </SelectItem>
-                                                                <SelectItem value="outra"
+                                                                <SelectItem value="Outra"
                                                                 >
                                                                     Outra
                                                                 </SelectItem>
@@ -192,18 +190,15 @@ export function RegisterPage() {
                                             <FormItem>
                                                 <FormLabel>Telefone</FormLabel>
                                                 <FormControl>
-                                                    <InputMask
-                                                        mask="(99) 9 9999-9999"
-                                                        value={field.value}
-                                                        onChange={field.onChange}
-                                                    >
-                                                        {(inputProps: any) => (
-                                                            <Input
-                                                                {...inputProps}
-                                                                placeholder="Ex.: (83) 9 9999-9999"
-                                                            />
-                                                        )}
-                                                    </InputMask>
+                                                    <MaskedInput
+                                                        placeholder="Ex.: (83) 9 9999-9999"
+                                                        mask={maskPhone}
+                                                        {...field}
+                                                    />
+                                                    {/* <Input
+                                                        placeholder="Ex.: (83) 9 9999-9999"
+                                                        {...field}
+                                                    /> */}
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -261,7 +256,7 @@ export function RegisterPage() {
                                         type="submit"
                                         className="w-full bg-green-600 text-white hover:bg-green-700 hover:cursor-pointer"
                                     >
-                                        Confirmar
+                                        {loading ? <Loading /> : "Confirmar"}
                                     </Button>
                                     <div className="flex items-center justify-between space-x-2">
                                         <Separator className="flex-grow h-px bg-gray-300" />

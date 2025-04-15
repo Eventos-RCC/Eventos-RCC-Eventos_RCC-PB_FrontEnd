@@ -3,12 +3,13 @@ import { Button } from "../ui/button";
 
 export function HeaderBar() {
     return (
-        <div className="flex h-20 items-center justify-between px-8 shadow-md">
+        <div className="flex h-20 items-center justify-between px-8 shadow-md select-none">
             <Link to={"/"}>
                 <img
                     src="src/assets/rccpb-01.png"
                     alt="logo-rcc-pb"
                     className="h-[56px] w-[122px]"
+                    draggable="false"
                 />
             </Link>
             <div className="flex items-center gap-5">
