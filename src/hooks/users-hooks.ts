@@ -35,6 +35,7 @@ const createUser = async (user: {
         return response.data
     } catch (err) {
         setError("Erro ao criar usuário")
+        throw new Error("Erro ao criar usuário")
     } finally {
         setLoading(false)
     }

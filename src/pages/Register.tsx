@@ -28,10 +28,9 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select";
-import { CheckCircle, Eye, EyeOff, X, XCircle } from "lucide-react";
+import { CheckCircle, Eye, EyeOff, Loader, X, XCircle } from "lucide-react";
 import { useState } from "react";
 import { useUsers } from "@/hooks/users-hooks";
-import { Loading } from "@/components/custom-components/Loading";
 import { MaskedInput } from "@/components/custom-components/MaskedInput";
 import { maskDate, maskPhone } from "@/utils/masks";
 import { toast } from "sonner";
@@ -267,7 +266,7 @@ export function RegisterPage() {
                                         type="submit"
                                         className="w-full bg-green-600 text-white hover:bg-green-700 hover:cursor-pointer"
                                     >
-                                        {loading ? <Loading /> : "Confirmar"}
+                                        {loading ? <Loader /> : "Confirmar"}
                                     </Button>
                                     <div className="flex items-center justify-between space-x-2">
                                         <Separator className="flex-grow h-px bg-gray-300" />
