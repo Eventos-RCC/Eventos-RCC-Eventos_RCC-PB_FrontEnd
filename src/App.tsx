@@ -1,4 +1,4 @@
-import './Index.css'
+import './index.css'
 import { RouterProvider } from 'react-router-dom'
 import { defaultRoutes } from './routes/Routes'
 import { Toaster } from 'sonner'

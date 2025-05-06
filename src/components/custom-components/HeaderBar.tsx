@@ -6,7 +6,7 @@ export function HeaderBar() {
         <div className="flex h-20 items-center justify-between px-8 shadow-md select-none">
             <Link to={"/"}>
                 <img
-                    src="src/assets/rccpb-01.png"
+                    src="/assets/rccpb-01.png"
                     alt="logo-rcc-pb"
                     className="h-[56px] w-[122px]"
                     draggable="false"
