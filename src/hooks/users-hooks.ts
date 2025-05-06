@@ -16,6 +16,30 @@ export const useUsers = () => {
 const [loading, setLoading] = useState(false)
 const [error, setError] = useState<string | null>(null)
 
+const initiateUserRegistration = async (user: {
+    name: string;
+    birthdate: string;
+    diocese: string;
+    phone: string;
+    email: string;
+    password: string;
+}) => {
+    setLoading(true)
+    setError(null)
+
+    try {
+        const response = await api.post("/api/users/verify-code", {
+            ...user,
+        })
+        return response.data // Retorna a resposta com o e-mail e mensagem
+    } catch (err: any) {
+        setError(err?.response?.data?.message || "Erro ao iniciar registro do usuário")
+        throw new Error("Erro ao iniciar registro do usuário")
+    } finally {
+        setLoading(false)
+    }
+}
+
 const createUser = async (user: {
     name: string;
     birthdate: string;
@@ -28,7 +52,7 @@ const createUser = async (user: {
     setError(null)
 
     try {
-        const response = await api.post("/api/user", {
+        const response = await api.post("/api/users", {
             ...user,
         })
         create(response.data)
@@ -45,7 +69,7 @@ const getUsers = async () => {
     setLoading(true)
     setError(null)
     try {
-        const response = await api.get<UserType[]>("/api/user")
+        const response = await api.get<UserType[]>("/api/users")
         setUsers(response.data)
     } catch (err) {
         setError("Erro ao buscar usuários")
@@ -54,6 +78,6 @@ const getUsers = async () => {
     }
 }
 
-return { users, createUser, getUsers, getUserById, loading, error }
+return { users, createUser, initiateUserRegistration , getUsers, getUserById, loading, error, setError }
 
 }

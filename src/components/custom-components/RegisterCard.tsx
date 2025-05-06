@@ -27,12 +27,12 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select";
-import { CheckCircle, Eye, EyeOff, Loader, X, XCircle } from "lucide-react";
+import { Eye, EyeOff, Loader } from "lucide-react";
 import { useState } from "react";
 import { useUsers } from "@/hooks/users-hooks";
 import { MaskedInput } from "@/components/custom-components/MaskedInput";
 import { maskDate, maskPhone } from "@/utils/masks";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 import { EmailAuthenticateDialog } from "./EmailAuthenticateDialog";
 
 const createUserSchema = z.object({
@@ -46,7 +46,7 @@ const createUserSchema = z.object({
 
 export function RegisterCard() {
 
-    const { createUser, loading } = useUsers()
+    const { createUser, initiateUserRegistration , loading } = useUsers()
     const [showPassword, setShowPassword] = useState(true)
     const [isDialogOpen, setIsDialogOpen] = useState(false)
 
@@ -64,31 +64,14 @@ export function RegisterCard() {
 
     const onSubmit = async (data: z.infer<typeof createUserSchema>) => {
         try {
-            const result = await createUser(data)
-            console.log("RESULTADO DA CRIAÇÃO:", result);
-            if (result) {
+            const response = await initiateUserRegistration(data);
+            console.log("Resposta da verificação:", response);
+            if (response.email) {
+                sessionStorage.setItem("emailToVerify", response.email);
                 setIsDialogOpen(true)
-                // toast("Sucesso!", {
-                //     description: "Cadastro concluído!",
-                //     icon: <CheckCircle className="text-green-500" />,
-                //     className: "bg-green-50 border border-green-300 text-green-900",
-                //     action: {
-                //         label: <X />,
-                //         onClick: () => console.log("Fechar"),
-                //     },
-                // })
-                console.log("Usuário criado com sucesso", result)
+                console.log("Informações guardadas com sucesso", response.email)
             }
         } catch (error) {
-            // toast("Erro!", {
-            //     description: "Falha no cadastro!",
-            //     icon: <XCircle className="text-red-500" />,
-            //     className: "bg-red-50 border border-red-300 text-red-900",
-            //     action: {
-            //         label: <X />,
-            //         onClick: () => console.log("Fechar"),
-            //     },
-            // })
             console.error("Erro ao criar usuário", error)
         }
     }
@@ -268,7 +251,7 @@ export function RegisterCard() {
                                         type="submit"
                                         className="w-full bg-green-600 text-white hover:bg-green-700 hover:cursor-pointer"
                                     >
-                                        {loading ? <Loader /> : "Confirmar"}
+                                        {loading ? <Loader /> : "Prosseguir"}
                                     </Button>
                                     <div className="flex items-center justify-between space-x-2">
                                         <Separator className="flex-grow h-px bg-gray-300" />
