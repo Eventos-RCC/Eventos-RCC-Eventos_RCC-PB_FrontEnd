@@ -4,13 +4,13 @@ import { Button } from "../ui/button";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Eye, EyeOff, Loader } from "lucide-react";
 import { Separator } from "@radix-ui/react-separator";
-import { use, useState } from "react";
+import { useState } from "react";
 import { Input } from "../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useUsers } from "@/hooks/users-hooks";
-import { Link } from "react-router-dom";
-import path from "path";
+// import { Link } from "react-router-dom";
+// import path from "path";
 
 const userLoginSchema = z.object({
     email: z.string().regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "Email inválido"),
