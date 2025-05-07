@@ -4,11 +4,13 @@ import { Button } from "../ui/button";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Eye, EyeOff, Loader } from "lucide-react";
 import { Separator } from "@radix-ui/react-separator";
-import { useState } from "react";
+import { use, useState } from "react";
 import { Input } from "../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useUsers } from "@/hooks/users-hooks";
+import { Link } from "react-router-dom";
+import path from "path";
 
 const userLoginSchema = z.object({
     email: z.string().regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "Email inválido"),
@@ -17,7 +19,7 @@ const userLoginSchema = z.object({
 
 export function LoginCard() {
 
-    const { loading } = useUsers()
+    const { loading, userLogin } = useUsers()
     const [showPassword, setShowPassword] = useState(true)
 
     const form = useForm<z.infer<typeof userLoginSchema>>({
@@ -29,7 +31,17 @@ export function LoginCard() {
     })
 
     const onSubmit = async (data: z.infer<typeof userLoginSchema>) => {
-        console.log("Dados do formulário:", data)
+        try {
+            const response = await userLogin(data);
+            console.log("Resposta da verificação:", response);
+                if (response.email) {
+                    console.log("Login feito com Sucesso", response.email)
+                        //< Link to = {{path=""}} />
+                }
+            } catch (error) {
+                console.error("Erro ao criar usuário", error)
+            }
+
     }
 
     return (

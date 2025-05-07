@@ -1,6 +1,6 @@
-import { useState } from "react"
-import axios from "axios"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import axios from "axios";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,31 +8,29 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useUsers } from "@/hooks/users-hooks"
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useUsers } from "@/hooks/users-hooks";
 
 interface EmailAuthenticateDialogProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
-export function EmailAuthenticateDialog({ open, onOpenChange }: EmailAuthenticateDialogProps) {
-  const [code, setCode] = useState("")
+export function EmailAuthenticateDialog({
+  open,
+  onOpenChange,
+}: EmailAuthenticateDialogProps) {
+  const [code, setCode] = useState("");
   const { loading, error, setError } = useUsers();
-  const email = sessionStorage.getItem("emailToVerify") // recupera email
+  const email = sessionStorage.getItem("emailToVerify"); // recupera email
 
   const handleConfirm = async () => {
     try {
-      const response = await axios.post(
-        "/users/verify-code",
-        { codeUser: code },
-        { headers: { email } }
-      );
-
-      console.log("Código verificado:", response.data);
-
+      const response = await axios.post("/users/verify-code", { codeUser: code, email });
+      console.log("Código verificado com sucesso");
+      console.log(response.data);
       // Redirecionar ou notificar sucesso
       sessionStorage.removeItem("emailToVerify");
       onOpenChange(false);
@@ -43,11 +41,7 @@ export function EmailAuthenticateDialog({ open, onOpenChange }: EmailAuthenticat
 
   const handleResend = async () => {
     try {
-      await axios.post(
-        "/users/verify-code",
-        { resendCode: true },
-        { headers: { email } }
-      );
+      await axios.post("/users/verify-code", { resendCode: true, email });
     } catch {
       setError("Erro ao reenviar código.");
     }
@@ -59,7 +53,8 @@ export function EmailAuthenticateDialog({ open, onOpenChange }: EmailAuthenticat
         <DialogHeader>
           <DialogTitle>Confirmação de email</DialogTitle>
           <DialogDescription>
-            Enviamos um código para o seu e-mail. Digite-o abaixo para continuar.
+            Enviamos um código para o seu e-mail. Digite-o abaixo para
+            continuar.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
@@ -72,12 +67,17 @@ export function EmailAuthenticateDialog({ open, onOpenChange }: EmailAuthenticat
               value={code}
               onChange={(e) => setCode(e.target.value)}
               className="col-span-3"
+              autoComplete="off"
             />
           </div>
           {error && <p className="text-sm text-red-500">{error}</p>}
         </div>
         <DialogFooter>
-          <Button onClick={handleConfirm} disabled={loading} className="bg-green-600 text-white hover:bg-green-700">
+          <Button
+            onClick={handleConfirm}
+            disabled={loading}
+            className="bg-green-600 text-white hover:bg-green-700"
+          >
             {loading ? "Verificando..." : "Confirmar"}
           </Button>
           <Button onClick={handleResend} variant="outline" disabled={loading}>
@@ -86,5 +86,5 @@ export function EmailAuthenticateDialog({ open, onOpenChange }: EmailAuthenticat
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

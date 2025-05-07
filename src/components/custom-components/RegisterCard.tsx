@@ -46,7 +46,7 @@ const createUserSchema = z.object({
 
 export function RegisterCard() {
 
-    const { createUser, initiateUserRegistration , loading } = useUsers()
+    const { createUser, loading } = useUsers()
     const [showPassword, setShowPassword] = useState(true)
     const [isDialogOpen, setIsDialogOpen] = useState(false)
 
@@ -64,7 +64,7 @@ export function RegisterCard() {
 
     const onSubmit = async (data: z.infer<typeof createUserSchema>) => {
         try {
-            const response = await initiateUserRegistration(data);
+            const response = await createUser(data);
             console.log("Resposta da verificação:", response);
             if (response.email) {
                 sessionStorage.setItem("emailToVerify", response.email);
