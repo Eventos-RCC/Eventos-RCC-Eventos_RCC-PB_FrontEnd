@@ -251,7 +251,7 @@ export function RegisterCard() {
                                         type="submit"
                                         className="w-full bg-green-600 text-white hover:bg-green-700 hover:cursor-pointer"
                                     >
-                                        {loading ? <Loader /> : "Prosseguir"}
+                                        {loading ? <Loader className="animate-spin"/> : "Prosseguir"}
                                     </Button>
                                     <div className="flex items-center justify-between space-x-2">
                                         <Separator className="flex-grow h-px bg-gray-300" />
