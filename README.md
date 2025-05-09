@@ -1,54 +1,102 @@
-# React + TypeScript + Vite
+# 🕊 RCC Paraíba - Sistema de Agendamento de Eventos (Back-end)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este repositório contém o **back-end** da aplicação de agendamento de eventos e encontros da **Renovação Carismática Católica da Paraíba (RCC-PB)**. A plataforma permite que grupos, coordenadores e organizadores da RCC possam criar, gerenciar e visualizar eventos de forma simples e organizada.
 
-Currently, two official plugins are available:
+> Para acessar o repositório do **front-end**, [clique aqui](https://github.com/Eventos-RCC/Eventos_RCC-PB_BackEnd);
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## ✨ Tecnologias Utilizadas
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **React.js** — Frontend da aplicação
+- **Type Script** — Frontend da aplicação
+- **Docker Compose** — Orquestração de containers para facilitar o deploy e ambiente de desenvolvimento
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🚀 Como subir a aplicação
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+> **Pré-requisitos:** Certifique-se de ter o Docker e Docker Compose instalados em sua máquina.
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+1. Clone o repositório:
+
+   ```bash
+   git clone https://github.com/Eventos-RCC/Eventos_RCC-PB_FrontEnd
+   cd Eventos_RCC-PB_FrontEnd
+   ```
+
+2. Suba os containers com o Docker Compose:
+
+   ```bash
+   docker-compose up -d
+   ```
+
+3. A aplicação estará disponível em:
+
+   ```
+   http://localhost:3000
+   ```
+
+4. Para acompanhar os logs:
+
+   ```bash
+   docker-compose logs -f
+   ```
+
+---
+
+## 👨‍💻 Desenvolvedores
+
+Este projeto está sendo desenvolvido com dedicação e zelo pelos seguintes membros:
+
+### 🎨 Front-end:
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/aldoalbuquerquejr.png" alt="Aldo Albuquerque" width="150"><br>
+      <b>Aldo Albuquerque</b>
+    </td>
+    <td align="center">
+      <img src="https://github.com/HenriqueFMA.png" alt="Roger Carvalho" width="150"><br>
+      <b>Henrique Fortunato</b>
+    </td>
+    <td align="center">
+      <img src="https://github.com/DanilloDevys.png" alt="Danilo" width="150"><br>
+      <b>Danilo Devys</b>
+    </td>
+  </tr>
+</table>
+
+### 🛠️ Back-end:
+<table>
+  <tr>
+     <td align="center">
+      <img src="https://github.com/giiordanni.png" alt="Giordanni" width="150"><br>
+      <b>Giordanni</b>
+    </td>
+    <td align="center">
+      <img src="https://github.com/Luciano-Claudio.png" alt="Luciano" width="150"><br>
+      <b>Luciano Cláudio</b>
+    </td>
+    <td align="center">
+      <img src="https://github.com/RogerCarvalhoUEPB.png" alt="Roger Carvalho" width="150"><br>
+      <b>Roger Carvalho</b>
+    </td>
+  </tr>
+</table>
+
+---
+
+## 🙏 Propósito
+
+Este sistema nasce da necessidade de organização e fluidez nos eventos da RCC-PB, com o intuito de **fortalecer a evangelização e promover encontros que impactem vidas**.
+
+---
+
+## 📬 Contato
+
+Para dúvidas ou contribuições, entre em contato com um dos desenvolvedores ou envie um e-mail para: [**giordanniformiga103@gmail.com**](mailto\:giordanniformiga103@gmail.com) (exemplo).
+
+---
+> “Ficaram todos cheios do Espírito Santo e começaram a falar em outras línguas, conforme o Espírito Santo lhes concedia que falassem.”\
+> — *Atos 2: 4*
