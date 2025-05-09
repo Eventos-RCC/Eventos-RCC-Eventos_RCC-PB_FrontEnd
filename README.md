@@ -2,7 +2,7 @@
 
 Este repositório contém o **back-end** da aplicação de agendamento de eventos e encontros da **Renovação Carismática Católica da Paraíba (RCC-PB)**. A plataforma permite que grupos, coordenadores e organizadores da RCC possam criar, gerenciar e visualizar eventos de forma simples e organizada.
 
-> Para acessar o repositório do **front-end**, [clique aqui](https://github.com/Eventos-RCC/Eventos_RCC-PB_BackEnd);
+> Para acessar o repositório do **back-end**, [clique aqui](https://github.com/Eventos-RCC/Eventos_RCC-PB_BackEnd);
 
 ---
 
