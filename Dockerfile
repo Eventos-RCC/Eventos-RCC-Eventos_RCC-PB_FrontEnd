@@ -1,22 +1,48 @@
-FROM node:20
+# FROM node:20
 
-WORKDIR /tmp/react
+# WORKDIR /tmp/react
 
+# COPY . .
+
+# RUN rm -rf node_modules
+
+# RUN npm install
+
+# RUN npm run build
+
+# RUN mkdir -p /var/www/html
+
+# RUN cp -r build/* /var/www/html
+
+# VOLUME /var/www/html
+
+# WORKDIR /
+
+# RUN rm -rf /tmp/react
+
+# Eventos_RCC-PB_FrontEnd/Dockerfile
+
+# Etapa de build do React
+FROM node:20 AS builder
+
+WORKDIR /app
 COPY . .
 
-RUN rm -rf node_modules
-
 RUN npm install
-
 RUN npm run build
 
-RUN mkdir -p /var/www/html
+# Etapa final com nginx
+FROM nginx:alpine
 
-RUN cp -r build/* /var/www/html
+# Remover a configuração padrão
+RUN rm /etc/nginx/conf.d/default.conf
 
-VOLUME /var/www/html
+# Copiar a build do React
+COPY --from=builder /app/build /usr/share/nginx/html
 
-WORKDIR /
+# Copiar a nginx.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-RUN rm -rf /tmp/react
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
 

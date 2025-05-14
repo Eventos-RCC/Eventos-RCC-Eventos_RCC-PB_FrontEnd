@@ -34,6 +34,7 @@ import { MaskedInput } from "@/components/custom-components/MaskedInput";
 import { maskDate, maskPhone } from "@/utils/masks";
 // import { toast } from "sonner";
 import { EmailAuthenticateDialog } from "./EmailAuthenticateDialog";
+import { Link } from "react-router-dom";
 
 const createUserSchema = z.object({
     name: z.string().regex(/^[a-zA-ZÀ-ÿ\s]+$/, "Nome inválido"),
@@ -82,7 +83,7 @@ export function RegisterCard() {
                 <img
                     src="/assets/rccpb-04.png"
                     alt="logo-register-rccpb"
-                    className="absolute top-15 left-15 w-1/3 h-auto object-cover filter brightness-0 invert opacity-60"
+                    className="absolute top-15 left-15 w-1/3 h-auto object-cover filter brightness-0 invert"
                     draggable="false"
                 />
                 <div className="flex w-full h-full">
@@ -232,7 +233,8 @@ export function RegisterCard() {
                                                             {...field}
                                                         />
                                                         <Button
-                                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
+                                                            type="button"
+                                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 hover:bg-transparent hover:cursor-pointer"
                                                             variant="ghost"
                                                             onClick={() => setShowPassword(!showPassword)}
                                                         >
@@ -260,7 +262,7 @@ export function RegisterCard() {
                                     </div>
                                     <div className="flex flex-col items-center space-y-2">
                                         <Button
-                                            type="submit"
+                                            type="button"
                                             variant={"outline"}
                                             className="w-full hover:bg-green-50 hover:cursor-pointer"
                                         >
@@ -273,9 +275,11 @@ export function RegisterCard() {
                                         </Button>
                                         <p className="text-sm text-gray-400">
                                             Já possui uma conta?{" "}
-                                            <a href="/login" className="text-green-600 hover:underline">
-                                                Faça login
-                                            </a>
+                                            <Link 
+                                                to={"/login"} 
+                                                className="text-green-600 hover:underline">
+                                                    Faça login
+                                            </Link>
                                         </p>
                                     </div>
                                 </form>

@@ -29,8 +29,8 @@ const userLogin = async (user: {
         })
         return response.data // Retorna a resposta com o e-mail e mensagem
     } catch (err: any) {
-        setError(err?.response?.data?.message || "Erro ao iniciar registro do usuário")
-        throw new Error("Erro ao iniciar registro do usuário")
+        setError(err?.response?.data?.message || "Erro ao tentar logar")
+        throw new Error("Erro ao tentar logar")
     } finally {
         setLoading(false)
     }
@@ -74,6 +74,15 @@ const getUsers = async () => {
     }
 }
 
-return { users, createUser, userLogin , getUsers, getUserById, loading, error, setError }
+return { 
+    users, 
+    createUser, 
+    userLogin , 
+    getUsers, 
+    getUserById, 
+    loading, 
+    error, 
+    setError 
+}
 
 }
