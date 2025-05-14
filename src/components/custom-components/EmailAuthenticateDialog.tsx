@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useUsers } from "@/hooks/users-hooks";
+import { Loader } from "lucide-react";
 
 interface EmailAuthenticateDialogProps {
   open: boolean;
@@ -78,7 +79,7 @@ export function EmailAuthenticateDialog({
             disabled={loading}
             className="bg-green-600 text-white hover:bg-green-700"
           >
-            {loading ? "Verificando..." : "Confirmar"}
+            {loading ? <Loader className="animate-spin"/> : "Confirmar"}
           </Button>
           <Button onClick={handleResend} variant="outline" disabled={loading}>
             Reenviar

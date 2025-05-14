@@ -19,19 +19,22 @@ export function HeaderBar() {
                 >
                     Sobre
                 </Button>
-                <Button
-                    variant="ghost"
-                    className="font-semibold hover:cursor-pointer"
-                >
-                    Cadastrar
-                </Button>
-                <Button
-                    className="w-28 bg-green-600 text-white hover:bg-green-700 hover:cursor-pointer"
-                >
-                    Login
-                </Button>
+                <Link to={"/signup"}>
+                    <Button
+                        variant="ghost"
+                        className="font-semibold hover:cursor-pointer"
+                    >
+                        Cadastrar
+                    </Button>
+                </Link>
+                <Link to={"/login"}>
+                    <Button
+                        className="w-28 bg-green-600 text-white hover:bg-green-700 hover:cursor-pointer"
+                    >
+                        Login
+                    </Button>
+                </Link>
             </div>
         </div>
-
     )
 }
