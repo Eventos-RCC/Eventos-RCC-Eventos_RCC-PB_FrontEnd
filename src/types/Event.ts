@@ -7,3 +7,7 @@ export interface EventType {
     event_type: string;
     diocese: string;
 }
+
+// {
+//     "event_type": 'Retiro', 'Congresso Estadual', 'Congresso Diocesano', 'Jesus no Litoral', 'Jesus no Sertão', 'Seminário de Vida no Espírito Santo',
+// }
