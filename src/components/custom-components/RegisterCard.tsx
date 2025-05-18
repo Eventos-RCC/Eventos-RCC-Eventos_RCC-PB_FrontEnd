@@ -32,7 +32,6 @@ import { useState } from "react";
 import { useUsers } from "@/hooks/users-hooks";
 import { MaskedInput } from "@/components/custom-components/MaskedInput";
 import { maskDate, maskPhone } from "@/utils/masks";
-// import { toast } from "sonner";
 import { EmailAuthenticateDialog } from "./EmailAuthenticateDialog";
 import { Link } from "react-router-dom";
 
