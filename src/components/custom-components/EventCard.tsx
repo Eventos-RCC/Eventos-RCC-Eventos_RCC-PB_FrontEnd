@@ -8,7 +8,7 @@ import {
     CardHeader,
     CardTitle
 } from "../ui/card";
-import { EventType } from "@/types/Event";
+//import { EventType } from "@/types/Event";
 
 // interface EventCardProps {
 //     event: EventType

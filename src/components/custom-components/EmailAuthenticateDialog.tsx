@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "@/apis/api";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -32,7 +32,7 @@ export function EmailAuthenticateDialog({
 
   const handleConfirm = async () => {
     try {
-      const response = await axios.post("/users/verify-code", { codeUser: code, email });
+      const response = await api.post("/users/verify-code", { codeUser: code, email });
       console.log("Código verificado com sucesso");
       console.log(response.data);
       toast("Evento criado com sucesso", {
@@ -61,7 +61,7 @@ export function EmailAuthenticateDialog({
 
   const handleResend = async () => {
     try {
-      await axios.post("/users/verify-code", { resendCode: true, email });
+      await api.post("/users/verify-code", { resendCode: true, email });
     } catch {
       setError("Erro ao reenviar código.");
     }

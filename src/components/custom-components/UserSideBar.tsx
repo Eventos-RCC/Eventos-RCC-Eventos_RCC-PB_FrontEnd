@@ -1,4 +1,4 @@
-import { Calendar, CalendarDays, Home, Inbox, Search, Settings } from "lucide-react"
+import { CalendarDays, Home } from "lucide-react"
 
 import {
     Sidebar,

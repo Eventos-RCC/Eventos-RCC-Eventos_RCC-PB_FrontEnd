@@ -3,7 +3,7 @@ import { EventCard } from "@/components/custom-components/EventCard";
 import { UserHeaderBar } from "@/components/custom-components/UserHeaderBar";
 import { AppSidebar } from "@/components/custom-components/UserSideBar";
 import { Button } from "@/components/ui/button";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarProvider } from "@/components/ui/sidebar"
 import { SquarePen } from "lucide-react";
 import { useState } from "react";
 
