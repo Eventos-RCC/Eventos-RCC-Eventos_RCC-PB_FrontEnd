@@ -3,11 +3,13 @@ import { UserPage } from "@/pages/UserPage";
 import { LoginPage } from "@/pages/LoginPage";
 import { RegisterPage } from "@/pages/RegisterPage";
 import { createBrowserRouter } from "react-router-dom";
+import ErrorPage from "@/pages/ErrorPage";
 
 export const defaultRoutes = createBrowserRouter([
     {
         path: "/",
-        element: <LandingPage />
+        element: <LandingPage />,
+        errorElement: <ErrorPage />
     },
     {
         path: "/signup",

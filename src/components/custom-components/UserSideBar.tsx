@@ -1,4 +1,4 @@
-import { Calendar, CalendarDays, Home, Inbox, Search, Settings } from "lucide-react"
+import { CalendarDays, Home } from "lucide-react"
 
 import {
     Sidebar,
@@ -11,18 +11,27 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-// Menu items.
+type SidebarProps = {
+    onMenuClick: (option: number) => void;
+    activeOption: number;
+};
+
+export function AppSidebar({ onMenuClick, activeOption }: SidebarProps) {
+
+    // Menu items.
 const items = [
     {
+        id: 0,
+        title: "Home",
+        // url: "#",
+        icon: Home,
+    },
+    {
+        id: 1,
         title: "Eventos",
-        url: "#",
+        // url: "#",
         icon: CalendarDays,
     },
-    // {
-    //     title: "Home",
-    //     url: "#",
-    //     icon: Home,
-    // },
     // {
     //     title: "Inbox",
     //     url: "#",
@@ -45,9 +54,8 @@ const items = [
     // },
 ]
 
-export function AppSidebar() {
     return (
-        <Sidebar collapsible="none" className="border-r-2">
+        <Sidebar collapsible="none" className="border-r-2 w-[250px] h-auto">
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupLabel>Menu Principal</SidebarGroupLabel>
@@ -55,11 +63,12 @@ export function AppSidebar() {
                         <SidebarMenu>
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild>
-                                        <a href={item.url}>
-                                            <item.icon />
-                                            <span>{item.title}</span>
-                                        </a>
+                                    <SidebarMenuButton
+                                        className={`hover:cursor-pointer ${activeOption === item.id && "bg-green-100 text-green-600"}`}
+                                        onClick={() => onMenuClick(item.id)}
+                                    >
+                                        <item.icon />
+                                        <span>{item.title}</span>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             ))}

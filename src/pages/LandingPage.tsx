@@ -1,9 +1,13 @@
+import { HeaderBar } from "@/components/custom-components/HeaderBar";
+
 export function LandingPage() {
     return (
         <>
-            <h1 className="p-4 text-center text-xl font-bold">
-                Esta é a landing page do sistema da rcc Paraíba!
-            </h1>
+            <HeaderBar />
+            <div
+                className={`flex h-[600px] w-full items-center justify-center bg-[url('/assets/rcc-landing-img.jpg')] from-transparent to-white bg-cover bg-center bg-no-repeat`}
+            >
+            </div>
         </>
     )
 }
