@@ -24,6 +24,7 @@ export const useEvents = () => {
         eventType: string
         diocese: string
     }) => {
+        
         setLoading(true)
         setError(null)
 

@@ -6,17 +6,17 @@ import { Button } from "@/components/ui/button";
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { useEvents } from "@/hooks/events-hooks";
 import { SquarePen } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export function UserPage({ children }: { children: React.ReactNode }) {
 
-  const { events } = useEvents();
+  const { events, getEvents } = useEvents();
   const [sideBarOption, setSideBarOption] = useState(0);
   const [showCreateEventCard, setShowCreateEventCard] = useState(false);
 
-  // useEffect(() => {
-  //   getEvents()
-  // }, [getEvents])
+  useEffect(() => {
+    getEvents()
+  }, [getEvents])
   
 
   function handleMenuClick(option: number) {
