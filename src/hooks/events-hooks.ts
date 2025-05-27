@@ -34,6 +34,7 @@ export const useEvents = () => {
             })
             console.log(response.data) // para teste
             create(response.data)
+            await getEvents()
             return response.data
         } catch (err) {
             setError("Error tryng to create event")

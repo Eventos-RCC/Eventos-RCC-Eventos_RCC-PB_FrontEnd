@@ -16,7 +16,7 @@ export function UserPage({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     getEvents()
-  }, [getEvents])
+  }, [])
   
 
   function handleMenuClick(option: number) {
