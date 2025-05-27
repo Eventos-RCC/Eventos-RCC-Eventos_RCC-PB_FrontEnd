@@ -29,9 +29,9 @@ import { toast } from "sonner"
 const createEventSchema = z.object({
   name: z.string().regex(/^[a-zA-Z0-9\s]+$/, "Nome inválido"),
   description: z.string().regex(/^[a-zA-Z0-9\s]+$/, "Descrição inválida"),
-  start_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Data inválida"),
-  end_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Data inválida"),
-  event_type: z.enum([
+  startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Data inválida"),
+  endDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Data inválida"),
+  eventType: z.enum([
     "Retiro",
     "Congresso Estadual",
     "Congresso Diocesano",
@@ -58,9 +58,9 @@ export function CreateEventCard() {
     defaultValues: {
       name: "",
       description: "",
-      start_date: "",
-      end_date: "",
-      event_type: undefined,
+      startDate: "",
+      endDate: "",
+      eventType: undefined,
       diocese: undefined,
     }
   })
@@ -90,18 +90,6 @@ export function CreateEventCard() {
           }
         })
     }
-  }
-
-  function testarToast (){
-    toast("Erro ao criar evento", {
-          duration: 5000,
-          icon: <CircleX  className="text-white"/>,
-          style: {
-            backgroundColor: "#dc2626",
-            color: "white",
-            gap: "1rem",
-          }
-        })
   }
 
   return (
@@ -153,7 +141,7 @@ export function CreateEventCard() {
               <div className="flex flex-col space-y-1.5">
                 <FormField
                   control={form.control}
-                  name="start_date"
+                  name="startDate"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Data de início</FormLabel>
@@ -171,7 +159,7 @@ export function CreateEventCard() {
               <div className="flex flex-col space-y-1.5">
                 <FormField
                   control={form.control}
-                  name="end_date"
+                  name="endDate"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Data de encerramento</FormLabel>
@@ -189,7 +177,7 @@ export function CreateEventCard() {
               <div className="flex flex-col space-y-1.5">
                 <FormField
                   control={form.control}
-                  name="event_type"
+                  name="eventType"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Modalidade do evento</FormLabel>
@@ -284,7 +272,6 @@ export function CreateEventCard() {
       </CardContent>
       <CardFooter className="flex justify-end w-full gap-2">
         <Button
-          onClick={testarToast}
           type="button"
           variant="outline"
           className="w-48 hover:bg-green-50 hover:cursor-pointer"

@@ -4,13 +4,20 @@ import { UserHeaderBar } from "@/components/custom-components/UserHeaderBar";
 import { AppSidebar } from "@/components/custom-components/UserSideBar";
 import { Button } from "@/components/ui/button";
 import { SidebarProvider } from "@/components/ui/sidebar"
+import { useEvents } from "@/hooks/events-hooks";
 import { SquarePen } from "lucide-react";
 import { useState } from "react";
 
 export function UserPage({ children }: { children: React.ReactNode }) {
 
+  const { events } = useEvents();
   const [sideBarOption, setSideBarOption] = useState(0);
   const [showCreateEventCard, setShowCreateEventCard] = useState(false);
+
+  // useEffect(() => {
+  //   getEvents()
+  // }, [getEvents])
+  
 
   function handleMenuClick(option: number) {
     setSideBarOption(option);
@@ -61,16 +68,23 @@ export function UserPage({ children }: { children: React.ReactNode }) {
                       Criar evento
                     </Button>
                   </div>
-                  <div className="grid grid-cols-3 gap-6">
-                    <EventCard />
-                    <EventCard />
-                    <EventCard />
-                  </div>
+                  {events.length > 0 ? (
+                    <div className="grid grid-cols-3 gap-6">
+                      {events.map((event) => (
+                        <EventCard key={event.id} event={event} />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex justify-end w-full text-center mt-8 text-gray-600">
+                      <p>
+                        No momento não há nenhum evento cadastrado.
+                      </p>
+                    </div>
+                  )}
                 </>
               )}
             </div>
           )}
-
         </main>
       </SidebarProvider>
     </>

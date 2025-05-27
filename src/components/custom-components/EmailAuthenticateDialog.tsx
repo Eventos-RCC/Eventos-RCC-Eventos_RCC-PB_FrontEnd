@@ -35,7 +35,7 @@ export function EmailAuthenticateDialog({
       const response = await api.post("/users/verify-code", { codeUser: code, email });
       console.log("Código verificado com sucesso");
       console.log(response.data);
-      toast("Evento criado com sucesso", {
+      toast("Código verificado com sucesso", {
         duration: 5000,
         icon: <CircleCheck className="text-white" />,
         style: {
@@ -48,7 +48,7 @@ export function EmailAuthenticateDialog({
       onOpenChange(false);
     } catch (err: any) {
       setError(err?.response?.data?.message || "Erro ao verificar código");
-      toast("Erro ao criar evento", {
+      toast("Erro ao verificar código", {
         duration: 5000,
         icon: <CircleX className="text-white" />,
         style: {

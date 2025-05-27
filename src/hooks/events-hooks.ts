@@ -19,18 +19,19 @@ export const useEvents = () => {
     const createEvent = async (event: {
         name: string
         description: string
-        start_date: string
-        end_date: string
-        event_type: string
+        startDate: string
+        endDate: string
+        eventType: string
         diocese: string
     }) => {
         setLoading(true)
         setError(null)
 
         try {
-            const response = await api.post("/events/", {
+            const response = await api.post("/events", {
                 ...event,
             })
+            console.log(response.data) // para teste
             create(response.data)
             return response.data
         } catch (err) {

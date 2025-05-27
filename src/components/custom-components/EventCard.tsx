@@ -8,27 +8,32 @@ import {
     CardHeader,
     CardTitle
 } from "../ui/card";
-//import { EventType } from "@/types/Event";
+import { EventType } from "@/types/Event";
+import { formatEventDateRange } from "@/utils/formatEventDateRange";
 
-// interface EventCardProps {
-//     event: EventType
-// }
+interface EventCardProps {
+    event: EventType
+}
 
-export function EventCard() {
+export function EventCard({ event }: EventCardProps) {
+
+    const formattedDate = formatEventDateRange(event.startDate, event.endDate)
+
     return (
         <Card className="w-[330px] h-[530px]">
             <img
                 src="/assets/evento-rcc-imagem-exemplo.png"
-                alt="imagem exemplo de evento" />
+                alt="imagem exemplo de evento"
+            />
             <CardHeader>
                 <CardTitle
                     className="text-green-600">
-                    Encontro Ser Coordenador é uma Benção
-                    {/* {name} */}
+                    {/* Encontro Ser Coordenador é uma Benção */}
+                    {event.name}
                 </CardTitle>
                 <CardDescription>
-                    Um encontro especial para os coordenadores de grupos de oração do Estado da Paraíba
-                    {/* {description} */}
+                    {/* Um encontro especial para os coordenadores de grupos de oração do Estado da Paraíba */}
+                    {event.description}
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -38,16 +43,8 @@ export function EventCard() {
                         <span
                             className="font-normal"
                         >
-                            05 - 06 de abril de 2025
-                            {/* {new Date(start_date).toLocaleDateString("pt-BR", {
-                                day: "2-digit",
-                                month: "2-digit",
-                                year: "2-digit",
-                            })} - {new Date(end_date).toLocaleDateString("pt-BR", {
-                                day: "2-digit",
-                                month: "2-digit",
-                                year: "2-digit",
-                            })} */}
+                            {/* 05 - 06 de abril de 2025 */}
+                            {formattedDate}
                         </span>
                     </div>
                     <div className="flex gap-2">
@@ -55,8 +52,8 @@ export function EventCard() {
                         <span
                             className="font-normal"
                         >
-                            Congresso estadual
-                            {/* {event_type} */}
+                            {/* Congresso estadual */}
+                            {event.eventType}
                         </span>
                     </div>
                 </div>
