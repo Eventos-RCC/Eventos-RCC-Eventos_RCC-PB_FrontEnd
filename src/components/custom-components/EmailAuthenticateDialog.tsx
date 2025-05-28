@@ -11,11 +11,11 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { useUsers } from "@/hooks/users-hooks";
-import { CircleCheck, CircleX, Loader } from "lucide-react";
+import { Loader } from "lucide-react";
 import { MaskedInput } from "@/components/custom-components/MaskedInput";
 import { maskVerificationCode } from "@/utils/masks";
-import { Link } from "react-router-dom";
-import { toast } from "sonner";
+// import { useNavigate } from "react-router-dom";
+// import { toast } from "sonner";
 
 interface EmailAuthenticateDialogProps {
   open: boolean;
@@ -28,6 +28,8 @@ export function EmailAuthenticateDialog({
 }: EmailAuthenticateDialogProps) {
   const [code, setCode] = useState("");
   const { loading, error, setError } = useUsers();
+
+  // const navigate = useNavigate();
   const email = sessionStorage.getItem("emailToVerify"); // recupera email
 
   const handleConfirm = async () => {
@@ -35,27 +37,27 @@ export function EmailAuthenticateDialog({
       const response = await api.post("/users/verify-code", { codeUser: code, email });
       console.log("Código verificado com sucesso");
       console.log(response.data);
-      toast("Código verificado com sucesso", {
-        duration: 5000,
-        icon: <CircleCheck className="text-white" />,
-        style: {
-          backgroundColor: "green-600",
-          color: "white",
-        }
-      });
-      <Link to={"/user"} />
+      // toast("Código verificado com sucesso", {
+      //   duration: 5000,
+      //   icon: <CircleCheck className="text-white" />,
+      //   style: {
+      //     backgroundColor: "green-600",
+      //     color: "white",
+      //   }
+      // });
+      // navigate("/user");
       sessionStorage.removeItem("emailToVerify");
       onOpenChange(false);
     } catch (err: any) {
       setError(err?.response?.data?.message || "Erro ao verificar código");
-      toast("Erro ao verificar código", {
-        duration: 5000,
-        icon: <CircleX className="text-white" />,
-        style: {
-          backgroundColor: "red-600",
-          color: "white",
-        }
-      })
+      // toast("Erro ao verificar código", {
+      //   duration: 5000,
+      //   icon: <CircleX className="text-white" />,
+      //   style: {
+      //     backgroundColor: "red-600",
+      //     color: "white",
+      //   }
+      // })
     }
   };
 

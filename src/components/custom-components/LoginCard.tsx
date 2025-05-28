@@ -10,8 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useUsers } from "@/hooks/users-hooks";
 import { Link } from "react-router-dom";
-// import { Link } from "react-router-dom";
-// import path from "path";
+import { useNavigate } from "react-router-dom";
 
 const userLoginSchema = z.object({
     email: z.string().regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "Email inválido"),
@@ -22,6 +21,8 @@ export function LoginCard() {
 
     const { loading, userLogin } = useUsers()
     const [showPassword, setShowPassword] = useState(true)
+
+    const navigate = useNavigate();
 
     const form = useForm<z.infer<typeof userLoginSchema>>({
         resolver: zodResolver(userLoginSchema),
@@ -37,7 +38,7 @@ export function LoginCard() {
             console.log("Resposta da verificação:", response);
                 if (response.email) {
                     console.log("Login feito com Sucesso", response.email)
-                        //< Link to = {{path=""}} />
+                    navigate("/user");
                 }
             } catch (error) {
                 console.error("Erro ao criar usuário", error)
