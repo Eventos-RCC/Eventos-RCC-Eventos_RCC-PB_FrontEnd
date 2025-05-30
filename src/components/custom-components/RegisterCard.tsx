@@ -27,15 +27,13 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select";
-import { CircleCheck, CircleX, Eye, EyeOff, Loader } from "lucide-react";
+import { Eye, EyeOff, Loader } from "lucide-react";
 import { useState } from "react";
 import { useUsers } from "@/hooks/users-hooks";
 import { MaskedInput } from "@/components/custom-components/MaskedInput";
 import { maskDate, maskPhone } from "@/utils/masks";
 import { EmailAuthenticateDialog } from "./EmailAuthenticateDialog";
 import { Link } from "react-router-dom";
-import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
 
 const createUserSchema = z.object({
     name: z.string().regex(/^[a-zA-ZÀ-ÿ\s]+$/, "Nome inválido"),
@@ -51,8 +49,6 @@ export function RegisterCard() {
     const { createUser, loading } = useUsers()
     const [showPassword, setShowPassword] = useState(true)
     const [isDialogOpen, setIsDialogOpen] = useState(false)
-
-    const navigate = useNavigate();
 
     const form = useForm<z.infer<typeof createUserSchema>>({
         resolver: zodResolver(createUserSchema),
@@ -76,27 +72,8 @@ export function RegisterCard() {
                 console.log("Informações guardadas com sucesso", response.email)
             }
             console.log("Usuário registrado com sucesso", response);
-            toast("Usuário registrado com sucesso", {
-                duration: 5000,
-                icon: <CircleCheck className="text-white" />,
-                style: {
-                    backgroundColor: "#16a34a",
-                    color: "white",
-                    gap: "1rem",
-                },
-            });
-            navigate("/user");
         } catch (error) {
             console.error("Erro ao registrar usuário", error)
-            toast("Erro ao registrar evento", {
-                duration: 5000,
-                icon: <CircleX className="text-white" />,
-                style: {
-                    backgroundColor: "#dc2626",
-                    color: "white",
-                    gap: "1rem",
-                },
-            });
         }
     }
 
