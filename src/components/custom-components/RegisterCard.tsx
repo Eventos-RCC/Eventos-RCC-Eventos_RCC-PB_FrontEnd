@@ -271,7 +271,7 @@ export function RegisterCard() {
                                                 src="/assets/Google.svg"
                                                 alt="google-logo"
                                             />
-                                            Cadastrar com Google
+                                            Continuar com Google
                                         </Button>
                                         <p className="text-sm text-gray-400">
                                             Já possui uma conta?{" "}

@@ -1,12 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import {
     Bell,
+    Loader,
     LogOut,
     Settings,
     User,
-} from "lucide-react"
+} from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -15,18 +16,54 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-
-function getUserInitials(name: string): string {
-    const names = name.trim().split(" ");
-    const first = names[0]?.charAt(0) || "";
-    const last = names.length > 1 ? names[names.length - 1].charAt(0) : "";
-    return `${first}${last}`.toUpperCase();
-}
+} from "@/components/ui/dropdown-menu";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { getUserInitials } from "@/utils/manipulateNames";
 
 export function UserHeaderBar() {
 
-    const userName = "Aldo Albuquerque"; // Substituir pela fonte real do nome
+    const [userName, setUserName] = useState<string>("");
+    const navigate = useNavigate();
+
+    async function handleLogout() {
+        try {
+            const response = await fetch("/api/users/logout", {
+                method: "POST",
+                credentials: "include",
+            })
+
+            if (!response.ok) {
+                throw new Error("Erro ao tentar fazer logout");
+            }
+
+            localStorage.removeItem("username");
+            toast("Saindo..", {
+                duration: 2000,
+                icon: <Loader className="text-green-700 animate-spin" />,
+                style: {
+                    backgroundColor: "#ffffff",
+                    color: "green",
+                    gap: "1rem",
+                },
+            });
+            console.log("Usuário deslogado com sucesso");
+            navigate("/login");
+        } catch (error) {
+            console.error("Erro ao tentar fazer logout:", error)
+        }
+    }
+
+    useEffect(() => {
+        const storedName = localStorage.getItem("username");
+        if (storedName) {
+            setUserName(storedName);
+        } else {
+            console.warn("Nenhum nome de usuário encontrado na localStorage");
+        }
+    }, []);
+
+
     const initials = getUserInitials(userName);
 
     return (
@@ -71,7 +108,10 @@ export function UserHeaderBar() {
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className="hover:cursor-pointer">
+                        <DropdownMenuItem
+                            onClick={handleLogout}
+                            className="hover:cursor-pointer"
+                        >
                             <LogOut />
                             <span>Logout</span>
                         </DropdownMenuItem>

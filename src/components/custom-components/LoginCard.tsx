@@ -36,14 +36,24 @@ export function LoginCard() {
     const onSubmit = async (data: z.infer<typeof userLoginSchema>) => {
         try {
             const response = await userLogin(data);
-            console.log("Resposta da verificação:", response);
-            if (response && response.token) {
-                console.log("Login realizado com Sucesso", response.token);
+            if (response) {
+                console.log("Usuário logado com Sucesso", response);
+                const username = response.userName;
+                localStorage.setItem("username", username);
+                toast("Entrando..", {
+                    duration: 2000,
+                    icon: <Loader className="text-green-700 animate-spin" />,
+                    style: {
+                        backgroundColor: "#ffffff",
+                        color: "green",
+                        gap: "1rem",
+                    },
+                });
                 navigate("/user");
             }
         } catch (error) {
             console.error("Erro ao tentar logar usuário", error)
-            toast("Erro ao tentar logar evento", {
+            toast("Erro ao tentar logar usuário", {
                 duration: 5000,
                 icon: <CircleX className="text-white" />,
                 style: {
@@ -155,7 +165,7 @@ export function LoginCard() {
                                             src="/assets/Google.svg"
                                             alt="google-logo"
                                         />
-                                        Fazer login com Google
+                                        Continuar com Google
                                     </Button>
                                     <p className="text-sm text-gray-400">
                                         Não possui uma conta?{" "}

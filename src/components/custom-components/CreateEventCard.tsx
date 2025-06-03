@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -27,8 +26,8 @@ import { maskDate } from "@/utils/masks";
 import { toast } from "sonner";
 
 const createEventSchema = z.object({
-  name: z.string().regex(/^[a-zA-Z0-9\s]+$/, "Nome inválido"),
-  description: z.string().regex(/^[a-zA-Z0-9\s]+$/, "Descrição inválida"),
+  name: z.string().regex(/^[\p{L}\p{M}0-9\s]+$/u, "Nome inválido"),
+  description: z.string().regex(/^[\p{L}0-9\s.,!?()-]+$/u, "Descrição inválida"),
   startDate: z.string().regex(/^\d{2}\/\d{2}\/\d{4}$/, "Data inválida"),
   endDate: z.string().regex(/^\d{2}\/\d{2}\/\d{4}$/, "Data inválida"),
   eventType: z.enum([
@@ -92,7 +91,7 @@ export function CreateEventCard() {
   };
 
   return (
-    <Card className="w-4xl p-6 mx-auto">
+    <Card className="w-full max-w-xl p-6 mx-auto shadow-lg">
       <CardHeader className="flex flex-col items-center text-center">
         <CardTitle>Crie um evento</CardTitle>
         <CardDescription>
@@ -101,8 +100,8 @@ export function CreateEventCard() {
       </CardHeader>
       <CardContent>
         <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex flex-col space-y-1.5">
                 <FormField
                   control={form.control}
@@ -112,6 +111,7 @@ export function CreateEventCard() {
                       <FormLabel>Nome</FormLabel>
                       <FormControl>
                         <Input
+                          className="w-full"
                           placeholder="Ex.: Encontro Estadual Ser Coordenador é uma Benção"
                           {...field}
                         />
@@ -129,6 +129,7 @@ export function CreateEventCard() {
                       <FormLabel>Descrição</FormLabel>
                       <FormControl>
                         <Input
+                          className="w-full"
                           placeholder="Ex.: Um encontro especial para os coordenadores de grupos de oração do Estado da Paraíba"
                           {...field}
                         />
@@ -146,6 +147,7 @@ export function CreateEventCard() {
                       <FormLabel>Data de início</FormLabel>
                       <FormControl>
                         <MaskedInput
+                          className="w-full"
                           placeholder="Ex.: 01/01/2000"
                           mask={maskDate}
                           {...field}
@@ -164,6 +166,7 @@ export function CreateEventCard() {
                       <FormLabel>Data de encerramento</FormLabel>
                       <FormControl>
                         <MaskedInput
+                          className="w-full"
                           placeholder="Ex.: 01/01/2000"
                           mask={maskDate}
                           {...field}
@@ -185,8 +188,8 @@ export function CreateEventCard() {
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                         >
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Selecione a modalidade do evento" />
+                          <SelectTrigger className="w-full truncate">
+                            <SelectValue placeholder="Selecione a modalidade" />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
@@ -226,7 +229,7 @@ export function CreateEventCard() {
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                         >
-                          <SelectTrigger className="w-full">
+                          <SelectTrigger className="w-full truncate">
                             <SelectValue placeholder="Selecione a diocese" />
                           </SelectTrigger>
                           <SelectContent>
@@ -256,7 +259,8 @@ export function CreateEventCard() {
                 />
               </div>
             </div>
-              <CardFooter className="flex justify-end w-full gap-2">
+            <div className="flex justify-end gap-4 col-start-1 md:col-start-2">
+              {/* <CardFooter className="gap-4"> */}
                 <Button
                   type="button"
                   variant="outline"
@@ -268,7 +272,8 @@ export function CreateEventCard() {
                   className="w-48 bg-green-600 text-white hover:bg-green-700 hover:cursor-pointer">
                   {loading ? <Loader className="animate-spin" /> : "Prosseguir"}
                 </Button>
-              </CardFooter>
+              {/* </CardFooter> */}
+            </div>
           </form>
         </FormProvider>
       </CardContent>
