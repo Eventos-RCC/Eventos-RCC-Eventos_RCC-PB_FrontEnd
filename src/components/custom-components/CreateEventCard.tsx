@@ -1,13 +1,12 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { MaskedInput } from "@/components/custom-components/MaskedInput";
 import {
   Select,
@@ -16,22 +15,22 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { useEvents } from "@/hooks/events-hooks"
-import { CircleCheck, CircleX, Loader } from "lucide-react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { FormProvider, useForm } from "react-hook-form"
-import { z } from "zod"
-import { FormControl, FormField, FormItem, FormLabel } from "../ui/form"
+} from "@/components/ui/select";
+import { useEvents } from "@/hooks/events-hooks";
+import { CircleCheck, CircleX, Loader } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FormProvider, useForm } from "react-hook-form";
+import { z } from "zod";
+import { FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { maskDate } from "@/utils/masks";
-import { toast } from "sonner"
+import { toast } from "sonner";
 
 const createEventSchema = z.object({
-  name: z.string().regex(/^[a-zA-Z0-9\s]+$/, "Nome inválido"),
-  description: z.string().regex(/^[a-zA-Z0-9\s]+$/, "Descrição inválida"),
-  start_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Data inválida"),
-  end_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Data inválida"),
-  event_type: z.enum([
+  name: z.string().regex(/^[\p{L}\p{M}0-9\s]+$/u, "Nome inválido"),
+  description: z.string().regex(/^[\p{L}0-9\s.,!?()-]+$/u, "Descrição inválida"),
+  startDate: z.string().regex(/^\d{2}\/\d{2}\/\d{4}$/, "Data inválida"),
+  endDate: z.string().regex(/^\d{2}\/\d{2}\/\d{4}$/, "Data inválida"),
+  eventType: z.enum([
     "Retiro",
     "Congresso Estadual",
     "Congresso Diocesano",
@@ -47,65 +46,52 @@ const createEventSchema = z.object({
     "Diocese de Cajazeiras",
     "Outra",
   ]),
-})
+});
 
 export function CreateEventCard() {
-
-  const { loading, createEvent } = useEvents()
+  const { loading, createEvent } = useEvents();
 
   const form = useForm<z.infer<typeof createEventSchema>>({
     resolver: zodResolver(createEventSchema),
     defaultValues: {
       name: "",
       description: "",
-      start_date: "",
-      end_date: "",
-      event_type: undefined,
+      startDate: "",
+      endDate: "",
+      eventType: undefined,
       diocese: undefined,
-    }
-  })
+    },
+  });
 
   const onSubmit = async (data: z.infer<typeof createEventSchema>) => {
     try {
       const response = await createEvent(data);
       console.log("Evento criado com sucesso", response);
       toast("Evento criado com sucesso", {
-          duration: 5000,
-          icon: <CircleCheck className="text-white"/>,
-          style: {
-            backgroundColor: "#16a34a",
-            color: "white",
-            gap: "1rem",
-          }
-        })
+        duration: 5000,
+        icon: <CircleCheck className="text-white" />,
+        style: {
+          backgroundColor: "#16a34a",
+          color: "white",
+          gap: "1rem",
+        },
+      });
     } catch (error) {
       console.error("Erro ao criar evento", error);
       toast("Erro ao criar evento", {
-          duration: 5000,
-          icon: <CircleX  className="text-white"/>,
-          style: {
-            backgroundColor: "#dc2626",
-            color: "white",
-            gap: "1rem",
-          }
-        })
+        duration: 5000,
+        icon: <CircleX className="text-white" />,
+        style: {
+          backgroundColor: "#dc2626",
+          color: "white",
+          gap: "1rem",
+        },
+      });
     }
-  }
-
-  function testarToast (){
-    toast("Erro ao criar evento", {
-          duration: 5000,
-          icon: <CircleX  className="text-white"/>,
-          style: {
-            backgroundColor: "#dc2626",
-            color: "white",
-            gap: "1rem",
-          }
-        })
-  }
+  };
 
   return (
-    <Card className="w-4xl p-6 mx-auto">
+    <Card className="w-full max-w-xl p-6 mx-auto shadow-lg">
       <CardHeader className="flex flex-col items-center text-center">
         <CardTitle>Crie um evento</CardTitle>
         <CardDescription>
@@ -114,8 +100,8 @@ export function CreateEventCard() {
       </CardHeader>
       <CardContent>
         <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex flex-col space-y-1.5">
                 <FormField
                   control={form.control}
@@ -125,6 +111,7 @@ export function CreateEventCard() {
                       <FormLabel>Nome</FormLabel>
                       <FormControl>
                         <Input
+                          className="w-full"
                           placeholder="Ex.: Encontro Estadual Ser Coordenador é uma Benção"
                           {...field}
                         />
@@ -142,6 +129,7 @@ export function CreateEventCard() {
                       <FormLabel>Descrição</FormLabel>
                       <FormControl>
                         <Input
+                          className="w-full"
                           placeholder="Ex.: Um encontro especial para os coordenadores de grupos de oração do Estado da Paraíba"
                           {...field}
                         />
@@ -153,12 +141,13 @@ export function CreateEventCard() {
               <div className="flex flex-col space-y-1.5">
                 <FormField
                   control={form.control}
-                  name="start_date"
+                  name="startDate"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Data de início</FormLabel>
                       <FormControl>
                         <MaskedInput
+                          className="w-full"
                           placeholder="Ex.: 01/01/2000"
                           mask={maskDate}
                           {...field}
@@ -171,12 +160,13 @@ export function CreateEventCard() {
               <div className="flex flex-col space-y-1.5">
                 <FormField
                   control={form.control}
-                  name="end_date"
+                  name="endDate"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Data de encerramento</FormLabel>
                       <FormControl>
                         <MaskedInput
+                          className="w-full"
                           placeholder="Ex.: 01/01/2000"
                           mask={maskDate}
                           {...field}
@@ -189,39 +179,34 @@ export function CreateEventCard() {
               <div className="flex flex-col space-y-1.5">
                 <FormField
                   control={form.control}
-                  name="event_type"
+                  name="eventType"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Modalidade do evento</FormLabel>
                       <FormControl>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Selecione a modalidade do evento" />
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger className="w-full truncate">
+                            <SelectValue placeholder="Selecione a modalidade" />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
-                              <SelectItem value="Retiro"
-                              >
-                                Retiro
-                              </SelectItem>
-                              <SelectItem value="Congresso Estadual"
-                              >
+                              <SelectItem value="Retiro">Retiro</SelectItem>
+                              <SelectItem value="Congresso Estadual">
                                 Congresso Estadual
                               </SelectItem>
-                              <SelectItem value="Congresso Diocesano"
-                              >
+                              <SelectItem value="Congresso Diocesano">
                                 Congresso Diocesano
                               </SelectItem>
-                              <SelectItem value="Jesus no Litoral"
-                              >
+                              <SelectItem value="Jesus no Litoral">
                                 Jesus no Litoral
                               </SelectItem>
-                              <SelectItem value="Jesus no Sertão"
-                              >
+                              <SelectItem value="Jesus no Sertão">
                                 Jesus no Sertão
                               </SelectItem>
-                              <SelectItem value="Seminário de Vida no Espírito Santo"
-                              >
+                              <SelectItem value="Seminário de Vida no Espírito Santo">
                                 Seminário de Vida no Espírito Santo
                               </SelectItem>
                             </SelectGroup>
@@ -240,36 +225,31 @@ export function CreateEventCard() {
                     <FormItem>
                       <FormLabel>Diocese</FormLabel>
                       <FormControl>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <SelectTrigger className="w-full">
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger className="w-full truncate">
                             <SelectValue placeholder="Selecione a diocese" />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
-                              <SelectItem value="Arquidiocese da Paraíba"
-                              >
+                              <SelectItem value="Arquidiocese da Paraíba">
                                 Arquidiocese da Paraíba
                               </SelectItem>
-                              <SelectItem value="Diocese de Guarabira"
-                              >
+                              <SelectItem value="Diocese de Guarabira">
                                 Diocese de Guarabira
                               </SelectItem>
-                              <SelectItem value="Diocese de Campina Grande"
-                              >
+                              <SelectItem value="Diocese de Campina Grande">
                                 Diocese de Campina Grande
                               </SelectItem>
-                              <SelectItem value="Diocese de Patos"
-                              >
+                              <SelectItem value="Diocese de Patos">
                                 Diocese de Patos
                               </SelectItem>
-                              <SelectItem value="Diocese de Cajazeiras"
-                              >
+                              <SelectItem value="Diocese de Cajazeiras">
                                 Diocese de Cajazeiras
                               </SelectItem>
-                              <SelectItem value="Outra"
-                              >
-                                Outra
-                              </SelectItem>
+                              <SelectItem value="Outra">Outra</SelectItem>
                             </SelectGroup>
                           </SelectContent>
                         </Select>
@@ -279,25 +259,24 @@ export function CreateEventCard() {
                 />
               </div>
             </div>
+            <div className="flex justify-end gap-4 col-start-1 md:col-start-2">
+              {/* <CardFooter className="gap-4"> */}
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-48 hover:bg-green-50 hover:cursor-pointer">
+                  Cancelar
+                </Button>
+                <Button
+                  type="submit"
+                  className="w-48 bg-green-600 text-white hover:bg-green-700 hover:cursor-pointer">
+                  {loading ? <Loader className="animate-spin" /> : "Prosseguir"}
+                </Button>
+              {/* </CardFooter> */}
+            </div>
           </form>
         </FormProvider>
       </CardContent>
-      <CardFooter className="flex justify-end w-full gap-2">
-        <Button
-          onClick={testarToast}
-          type="button"
-          variant="outline"
-          className="w-48 hover:bg-green-50 hover:cursor-pointer"
-        >
-          Cancelar
-        </Button>
-        <Button
-          type="submit"
-          className="w-48 bg-green-600 text-white hover:bg-green-700 hover:cursor-pointer"
-        >
-          {loading ? <Loader className="animate-spin" /> : "Prosseguir"}
-        </Button>
-      </CardFooter>
     </Card>
-  )
+  );
 }

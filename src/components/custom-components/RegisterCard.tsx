@@ -71,8 +71,9 @@ export function RegisterCard() {
                 setIsDialogOpen(true)
                 console.log("Informações guardadas com sucesso", response.email)
             }
+            console.log("Usuário registrado com sucesso", response);
         } catch (error) {
-            console.error("Erro ao criar usuário", error)
+            console.error("Erro ao registrar usuário", error)
         }
     }
 
@@ -252,7 +253,7 @@ export function RegisterCard() {
                                         type="submit"
                                         className="w-full bg-green-600 text-white hover:bg-green-700 hover:cursor-pointer"
                                     >
-                                        {loading ? <Loader className="animate-spin"/> : "Prosseguir"}
+                                        {loading ? <Loader className="animate-spin" /> : "Prosseguir"}
                                     </Button>
                                     <div className="flex items-center justify-between space-x-2">
                                         <Separator className="flex-grow h-px bg-gray-300" />
@@ -270,14 +271,14 @@ export function RegisterCard() {
                                                 src="/assets/Google.svg"
                                                 alt="google-logo"
                                             />
-                                            Cadastrar com Google
+                                            Continuar com Google
                                         </Button>
                                         <p className="text-sm text-gray-400">
                                             Já possui uma conta?{" "}
-                                            <Link 
-                                                to={"/login"} 
+                                            <Link
+                                                to={"/login"}
                                                 className="text-green-600 hover:underline">
-                                                    Faça login
+                                                Faça login
                                             </Link>
                                         </p>
                                     </div>

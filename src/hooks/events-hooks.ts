@@ -19,23 +19,26 @@ export const useEvents = () => {
     const createEvent = async (event: {
         name: string
         description: string
-        start_date: string
-        end_date: string
-        event_type: string
+        startDate: string
+        endDate: string
+        eventType: string
         diocese: string
     }) => {
+        
         setLoading(true)
         setError(null)
 
         try {
-            const response = await api.post("/events/", {
+            const response = await api.post("/events", {
                 ...event,
             })
+            console.log(response.data) // para teste
             create(response.data)
+            await getEvents()
             return response.data
         } catch (err) {
-            setError("Error tryng to create event")
-            throw new Error("Error tryng to create event")
+            setError("Error trying to create event")
+            throw new Error("Error trying to create event")
         } finally {
             setLoading(false)
         }
@@ -50,24 +53,26 @@ export const useEvents = () => {
             setEvents(response.data)
             return response.data
         } catch (err) {
-            setError("Error tryng to fetch events")
-            throw new Error("Error tryng to fetch events")
+            setError("Error trying to fetch events")
+            throw new Error("Error trying to fetch events")
         } finally {
             setLoading(false)
         }
     }
 
-    const getEventById = async () => {
+    const getEventById = async (eventId: string) => {
         setLoading(true)
         setError(null)
 
         try {
-            const response = await api.get<EventType>(`/events/`)
+            const response = await api.get<EventType>(`/events/`,
+                {params: { event_id: eventId}},
+            )
             getById(response.data.id)
             return response.data
         } catch (err) {
-            setError("Error tryng to fetch event")
-            throw new Error("Error tryng to fetch event")
+            setError("Error trying to fetch event")
+            throw new Error("Error trying to fetch event")
         } finally {
             setLoading(false)
         }
@@ -78,29 +83,32 @@ export const useEvents = () => {
         setError(null)
 
         try {
-            const response = await api.put<EventType>(`/events/`, {
-                ...event,
-            })
+            const response = await api.patch<EventType>(`/events/`,
+                {...event},
+                {params: { event_id: event.id}},
+            )
             update(response.data.id, response.data)
             return response.data
         } catch (err) {
-            setError("Error tryng to update event")
-            throw new Error("Error tryng to update event")
+            setError("Error trying to update event")
+            throw new Error("Error trying to update event")
         } finally {
             setLoading(false)
         }
     }
 
-    const deleteEventById = async () => {
+    const deleteEventById = async (eventId: string) => {
         setLoading(true)
         setError(null)
 
         try {
-            const response = await api.delete(`/events/`)
+            const response = await api.delete(`/events/`,
+                {params: { event_id: eventId}},
+            )
             deleteEvent(response.data.id)
         } catch (err) {
-            setError("Error tryng to delete event")
-            throw new Error("Error tryng to delete event")
+            setError("Error trying to delete event")
+            throw new Error("Error trying to delete event")
         } finally {
             setLoading(false)
         }

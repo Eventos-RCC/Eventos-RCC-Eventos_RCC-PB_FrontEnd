@@ -2,7 +2,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
-import { Eye, EyeOff, Loader } from "lucide-react";
+import { CircleX, Eye, EyeOff, Loader } from "lucide-react";
 import { Separator } from "@radix-ui/react-separator";
 import { useState } from "react";
 import { Input } from "../ui/input";
@@ -10,8 +10,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useUsers } from "@/hooks/users-hooks";
 import { Link } from "react-router-dom";
-// import { Link } from "react-router-dom";
-// import path from "path";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const userLoginSchema = z.object({
     email: z.string().regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "Email inválido"),
@@ -22,6 +22,8 @@ export function LoginCard() {
 
     const { loading, userLogin } = useUsers()
     const [showPassword, setShowPassword] = useState(true)
+
+    const navigate = useNavigate();
 
     const form = useForm<z.infer<typeof userLoginSchema>>({
         resolver: zodResolver(userLoginSchema),
@@ -34,14 +36,33 @@ export function LoginCard() {
     const onSubmit = async (data: z.infer<typeof userLoginSchema>) => {
         try {
             const response = await userLogin(data);
-            console.log("Resposta da verificação:", response);
-                if (response.email) {
-                    console.log("Login feito com Sucesso", response.email)
-                        //< Link to = {{path=""}} />
-                }
-            } catch (error) {
-                console.error("Erro ao criar usuário", error)
+            if (response) {
+                console.log("Usuário logado com Sucesso", response);
+                const username = response.userName;
+                localStorage.setItem("username", username);
+                toast("Entrando..", {
+                    duration: 2000,
+                    icon: <Loader className="text-green-700 animate-spin" />,
+                    style: {
+                        backgroundColor: "#ffffff",
+                        color: "green",
+                        gap: "1rem",
+                    },
+                });
+                navigate("/user");
             }
+        } catch (error) {
+            console.error("Erro ao tentar logar usuário", error)
+            toast("Erro ao tentar logar usuário", {
+                duration: 5000,
+                icon: <CircleX className="text-white" />,
+                style: {
+                    backgroundColor: "#dc2626",
+                    color: "white",
+                    gap: "1rem",
+                },
+            });
+        }
 
     }
 
@@ -144,14 +165,14 @@ export function LoginCard() {
                                             src="/assets/Google.svg"
                                             alt="google-logo"
                                         />
-                                        Fazer login com Google
+                                        Continuar com Google
                                     </Button>
                                     <p className="text-sm text-gray-400">
                                         Não possui uma conta?{" "}
-                                        <Link 
-                                            to={"/signup"} 
+                                        <Link
+                                            to={"/signup"}
                                             className="text-green-600 hover:underline">
-                                                Cadastrar
+                                            Cadastrar
                                         </Link>
                                     </p>
                                 </div>
